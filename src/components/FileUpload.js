@@ -23,11 +23,16 @@ const FileUpload = () => {
 
     try {
       await Storage.put(file.name, file, {
+        key: file.name,  // Explicitly set the key parameter
         progressCallback(uploadProgress) {
           const currentProgress = (uploadProgress.loaded / uploadProgress.total) * 100;
           setProgress(currentProgress);
         },
-        contentType: file.type
+        contentType: file.type,
+        metadata: {
+          fileName: file.name,
+          fileType: file.type
+        }
       });
       setSuccess(true);
       setFile(null);
